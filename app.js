@@ -35,13 +35,13 @@ var demo1 = Object.entries(demographics[0]);
 // console.log(demo1);
 // alert(Object.entries(demo1));
 var demoLoc = d3.selectAll("panel-heading").node();
-demo1.forEach(row => {
-        var h5 = demoLoc.append("h3");
-        console.log(row)
-        Object.values(row).forEach((value)=> {
-            h5.append("h3").text(value);
-        });
-});
+// demo1.forEach(row => {
+//         var h5 = demoLoc.append("h3");
+//         console.log(row)
+//         Object.values(row).forEach((value)=> {
+//             h5.append("h3").text(value);
+//         });
+// });
 
 buildDropDown(samples);
 //Build initial plot
