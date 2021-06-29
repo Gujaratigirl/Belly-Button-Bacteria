@@ -117,6 +117,6 @@ function makeBar(){
         x: sampleNames,
         y:otuValues,
     };
-    Plotly.restyle(BUBBLE, update , [x , y])
+    Plotly.restyle(BUBBLE, update , [x , y]);
     });
 };
