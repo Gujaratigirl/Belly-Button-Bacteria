@@ -53,7 +53,8 @@ d3.json("samples.json").then((data)=> {
         y:otuValues,
         marker: {
             color: otuID,
-            size: otuValues
+            size: otuValues,
+            //showscale=True
         },
         mode: 'markers',
         //text: otuLabels, 
