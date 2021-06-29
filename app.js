@@ -52,12 +52,12 @@ d3.json("samples.json").then((data)=> {
         x: otuID,
         y:otuValues,
         marker: {
-            color: otuID,
+            color: otuValues , //otuID,
             size: otuValues,
             //showscale=True
         },
         mode: 'markers',
-        //text: otuLabels, 
+        text: otuLabels, 
     }]
     layout = {
         title: "Bacteria Cultures Per Sample",
@@ -108,16 +108,18 @@ function makeBar(){
     var reverseOTU = otuValues10.reverse();
     console.log(reverseNames); 
 
-    var x = reverseOTU;  
-    var y = reverseNames;  
+    // var x = reverseOTU;  
+    // var y = reverseNames;  
     
-        Plotly.restyle(BAR, "x", [x]);
-        Plotly.restyle(BAR, "y", [y]);
+        Plotly.restyle(BAR, "x", [reverseOTU]);
+        Plotly.restyle(BAR, "y", [reverseNames]);
 //Update BUBBLE
-    update = {
-        x: sampleNames,
-        y:otuValues,
-    };
-    Plotly.restyle(BUBBLE, update , [x , y]);
+    // update = {
+    //     x: sampleNames,
+    //     y:otuValues,
+    // };
+    Plotly.restyle("bubble", "x" , [sampleNames]);
+    Plotly.restyle("bubble", "y" , [otuValues]);
+    Plotly.restyle("bubble", "text" , [otuLabels]);
     });
 };
