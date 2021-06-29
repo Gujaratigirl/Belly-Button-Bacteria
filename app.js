@@ -3,13 +3,14 @@ d3.json("samples.json").then((data)=> {
 
     var samples = data.names;
 
-    var testing = data.samples.filter(row =>row.id === "940")[0].otu_ids;
+    var otuID = data.samples.filter(row =>row.id === "940")[0].otu_ids;
     var otuValues = data.samples.filter(row =>row.id === "940")[0].sample_values;
+    var otuLabels = data.samples.filter(row =>row.id === "940")[0].otu_labels;
 
-    var testing10 = testing.slice(0,10);
+    var otuName10 = otuID.slice(0,10);
     var otuValues10 = otuValues.slice(0,10);
 
-    var newNames = testing10.map(function(el){
+    var newNames = otuName10.map(function(el){
         return 'OTU ' + el;
     });
     var reverseNames = newNames.reverse();
@@ -45,29 +46,24 @@ d3.json("samples.json").then((data)=> {
 
     Plotly.newPlot(BAR, data, layout);
 
-
-    // Create a bubble chart that displays each sample.
-    // Use otu_ids for the x values.
-    // Use sample_values for the y values.
-    // Use sample_values for the marker size.
-    // Use otu_ids for the marker colors.
-    // Use otu_labels for the text values.
     //Basic bubble
+    var BUBBLE = d3.selectAll("#bubble").node();
     trace = [{
-        x: otu_ids,
-        y:otu_labels,
+        x: otuID,
+        y:otuValues,
         marker: {
-            color: otu_ids,
-            size: samples_values,
+            color: otuID,
+            size: otuValues
         },
         mode: 'markers',
-        text: otu_labels, 
+        //text: otuLabels, 
     }]
     layout = {
-        title: "",
-        xaxis : {title: ""}
+        title: "Bacteria Cultures Per Sample",
+        xaxis : {title: "OTU ID"}
+        
     }
-    Plotly.plot("bubble",trace,layout)
+    Plotly.plot(BUBBLE,trace,layout)
 });
 
 
@@ -94,11 +90,13 @@ function makeBar(){
     demo = metadata.filter(obj =>obj.id == sampleID)[0];
     sampleNames = samples.filter(obj => obj.id == sampleID)[0].otu_ids;
     otuValues = samples.filter(obj => obj.id == sampleID)[0].sample_values;
+    otuLabels = samples.filter(row =>row.id === sampleID)[0].otu_labels;
 //Demographic chart
     d3.select('.panel-body').html('');
     Object.entries(demo).forEach(([key,val]) => { 
         d3.select('.panel-body').append('h5').text(key.toUpperCase() + ' : ' + val);});
     
+//Update BAR    
     var sampleName10 = sampleNames.slice(0,10);
     var otuValues10 = otuValues.slice(0,10);
 
@@ -114,6 +112,11 @@ function makeBar(){
     
         Plotly.restyle(BAR, "x", [x]);
         Plotly.restyle(BAR, "y", [y]);
-
+//Update BUBBLE
+    update = {
+        x: sampleNames,
+        y:otuValues,
+    };
+    Plotly.restyle(BUBBLE, update , [x , y])
     });
 };
