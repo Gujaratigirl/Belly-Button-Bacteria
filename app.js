@@ -12,21 +12,25 @@ d3.json("samples.json").then((data)=> {
 
     var newNames = otuName10.map(function(el){
         return 'OTU ' + el;
+        
+
     });
-    var reverseNames = newNames.reverse();
+    //var reverseNames = newNames.reverse();
     var reverseOTU = otuValues10.reverse();
     console.log(newNames);
 
-
     d3.json("samples.json").then(({metadata, samples})=> {
-        demo = metadata.filter(obj =>obj.id == 940)[0];
-        sample = samples.filter(obj => obj.id == 940)[0];
 
+        var demo = metadata.filter(obj =>obj.id == 940)[0];
+        var washing = metadata.filter(obj =>obj.id == 940)[0].wfreq;
+        //console.log('washing:  ' + washing);
+        sample = samples.filter(obj => obj.id == 940)[0];
+//Demographics
         d3.select('.panel-body').html('');
         Object.entries(demo).forEach(([key,val]) => { 
             d3.select('.panel-body').append('h5').text(key.toUpperCase() + ' : ' + val);});
 
-        console.log(demo, sample);
+        //console.log(demo, sample);
     });
 
     buildDropDown(samples);
@@ -66,6 +70,20 @@ d3.json("samples.json").then((data)=> {
         
     }
     Plotly.plot(BUBBLE,trace,layout)
+
+    var data = [
+        {
+            domain: { x: [0, 1], y: [0, 1] },
+            value: 2, //washing,
+            title: { text: "Belly Button Washing per Week" },
+            type: "indicator",
+            mode: "gauge+number"
+        }
+    ];
+    
+    var layout = { width: 600, height: 500, margin: { t: 0, b: 0 } };
+    Plotly.newPlot('gauge', data, layout);
+    
 });
 
 
@@ -93,6 +111,7 @@ function makeBar(){
     sampleNames = samples.filter(obj => obj.id == sampleID)[0].otu_ids;
     otuValues = samples.filter(obj => obj.id == sampleID)[0].sample_values;
     otuLabels = samples.filter(row =>row.id === sampleID)[0].otu_labels;
+    washing2 = metadata.filter(obj =>obj.id == sampleID)[0].wfreq;
 //Demographic chart
     d3.select('.panel-body').html('');
     Object.entries(demo).forEach(([key,val]) => { 
@@ -122,5 +141,7 @@ function makeBar(){
     Plotly.restyle("bubble", "x" , [sampleNames]);
     Plotly.restyle("bubble", "y" , [otuValues]);
     Plotly.restyle("bubble", "text" , [otuLabels]);
+//Update Gauge 
+    Plotly.restyle('gauge', "value", [washing2]);
     });
 };
