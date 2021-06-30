@@ -52,7 +52,8 @@ d3.json("samples.json").then((data)=> {
         x: otuID,
         y:otuValues,
         marker: {
-            color: otuValues , //otuID,
+            color: otuID,
+            colorscale: 'Jet',//YlGnBu',
             size: otuValues,
             //showscale=True
         },
